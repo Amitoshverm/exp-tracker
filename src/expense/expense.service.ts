@@ -19,7 +19,11 @@ export class ExpenseService {
   }
 
   async findExpenseById(id: number) {
-    return this.expenseRepo.findOne({ where: { id: id } });
+    const expense = await this.expenseRepo.findOne({ where: { id: id } });
+    if (!expense) {
+      throw new NotFoundException("Expense not found");
+    }
+    return expense;
   }
 
   async updateExpense(id: number, updateExpenseDto: UpdateExpenseDto) {
