@@ -4,6 +4,7 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { UsersModule } from "./users/users.module";
 import { AuthModule } from "./auth/auth.module";
 import { User } from "./users/user.entity";
+import { ExpenseModule } from "./expense/expense.module";
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { User } from "./users/user.entity";
     // Feature modules
     UsersModule,
     AuthModule,
+    ExpenseModule,
   ],
   controllers: [],
   providers: [],

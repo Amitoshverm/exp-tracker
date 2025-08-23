@@ -1,13 +1,12 @@
 import {
-  BadRequestException,
   ConflictException,
   Injectable,
   NotFoundException,
   UnauthorizedException,
-} from '@nestjs/common';
-import * as bcrypt from 'bcryptjs';
-import { CreateUserDto, SignInDto, User } from 'src/users/user.entity';
-import { UsersService } from 'src/users/users.service';
+} from "@nestjs/common";
+import { CreateUserDto, SignInDto, User } from "src/users/user.entity";
+import { UsersService } from "src/users/users.service";
+import * as bcrypt from "bcryptjs";
 
 @Injectable()
 export class AuthService {
@@ -23,11 +22,11 @@ export class AuthService {
 
   async signUp(createUserDto: CreateUserDto) {
     const existingUser = await this.userService.findUserByEmail(
-      createUserDto.email,
+      createUserDto.email
     );
 
     if (existingUser != null) {
-      throw new ConflictException('User already exists');
+      throw new ConflictException("User already exists");
     } else {
       const hashedPassword = await this.hashPassword(createUserDto.password);
       const user = { ...createUserDto, password: hashedPassword };
@@ -37,15 +36,15 @@ export class AuthService {
   async signIn(signInDto: SignInDto) {
     const user = await this.userService.findUserByEmail(signInDto.email);
     if (user == null) {
-      throw new NotFoundException('User does not exists');
+      throw new NotFoundException("User does not exist");
     }
 
     const isPasswordValid = await this.comparePassword(
       signInDto.password,
-      user.password,
+      user.password
     );
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Invalid password');
+      throw new UnauthorizedException("Invalid password");
     }
     return this.userService.findUserById(user.id);
   }

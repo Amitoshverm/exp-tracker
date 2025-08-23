@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AuthService = void 0;
 const common_1 = require("@nestjs/common");
-const bcrypt = require("bcryptjs");
 const users_service_1 = require("../users/users.service");
+const bcrypt = require("bcryptjs");
 let AuthService = class AuthService {
     userService;
     constructor(userService) {
@@ -27,7 +27,7 @@ let AuthService = class AuthService {
     async signUp(createUserDto) {
         const existingUser = await this.userService.findUserByEmail(createUserDto.email);
         if (existingUser != null) {
-            throw new common_1.ConflictException('User already exists');
+            throw new common_1.ConflictException("User already exists");
         }
         else {
             const hashedPassword = await this.hashPassword(createUserDto.password);
@@ -38,11 +38,11 @@ let AuthService = class AuthService {
     async signIn(signInDto) {
         const user = await this.userService.findUserByEmail(signInDto.email);
         if (user == null) {
-            throw new common_1.NotFoundException('User does not exists');
+            throw new common_1.NotFoundException("User does not exist");
         }
         const isPasswordValid = await this.comparePassword(signInDto.password, user.password);
         if (!isPasswordValid) {
-            throw new common_1.UnauthorizedException('Invalid password');
+            throw new common_1.UnauthorizedException("Invalid password");
         }
         return this.userService.findUserById(user.id);
     }
