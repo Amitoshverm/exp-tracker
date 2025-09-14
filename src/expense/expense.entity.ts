@@ -25,8 +25,8 @@ export class Expense {
   @Column()
   userId: number;
 
-  //   @ManyToOne(() => User, (user) => user.expenses)
-  //   user: User;
+  // @ManyToOne(() => User, (user) => user.expenses, { onDelete: "CASCADE" })
+  // user: User;
 }
 
 export class CreateExpenseDto {

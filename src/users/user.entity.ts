@@ -2,10 +2,12 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from "typeorm";
 import { IsEmail, IsString, MinLength } from "class-validator";
+import { Expense } from "src/expense/expense.entity";
 
 @Entity()
 export class User {
@@ -29,6 +31,9 @@ export class User {
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  //   @OneToMany(() => Expense, (expense) => expense.user)
+  //   expenses: Expense[];
 }
 
 export class CreateUserDto {
