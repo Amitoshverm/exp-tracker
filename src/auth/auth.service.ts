@@ -33,7 +33,7 @@ export class AuthService {
       return await this.userService.createUser(user);
     }
   }
-  async signIn(signInDto: SignInDto) {
+  async login(signInDto: SignInDto) {
     const user = await this.userService.findUserByEmail(signInDto.email);
     if (user == null) {
       throw new NotFoundException("User does not exist");
