@@ -1,10 +1,22 @@
 import { CreateUserDto, SignInDto } from "src/users/user.entity";
 import { UsersService } from "src/users/users.service";
+import { JwtService } from "@nestjs/jwt";
 export declare class AuthService {
     private userService;
-    constructor(userService: UsersService);
+    private jwtService;
+    constructor(userService: UsersService, jwtService: JwtService);
     hashPassword(password: string): Promise<string>;
     comparePassword(plainPassword: string, hashedPassword: string): Promise<boolean>;
-    signUp(createUserDto: CreateUserDto): Promise<import("src/users/user.entity").ResponseUserDto>;
-    signIn(signInDto: SignInDto): Promise<import("src/users/user.entity").ResponseUserDto>;
+    generateTokken(userId: number, email: string): Promise<{
+        acessTokken: string;
+        refreshTokken: string;
+    }>;
+    signUp(createUserDto: CreateUserDto): Promise<{
+        acessTokken: string;
+        refreshTokken: string;
+    }>;
+    login(signInDto: SignInDto): Promise<{
+        acessTokken: string;
+        refreshTokken: string;
+    }>;
 }

@@ -39,14 +39,14 @@ let UsersService = class UsersService {
     async findUserById(id) {
         const user = await this.userRepository.findOne({ where: { id } });
         if (!user) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         return this.toResponseUserDto(user);
     }
     async updateUser(id, updateUserDto) {
         const user = await this.userRepository.findOne({ where: { id } });
         if (!user) {
-            throw new common_1.NotFoundException('User not found');
+            throw new common_1.NotFoundException("User not found");
         }
         await this.userRepository.update(id, updateUserDto);
         return this.toResponseUserDto(user);

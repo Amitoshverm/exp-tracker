@@ -14,7 +14,7 @@ export declare class CreateUserDto {
     lastName: string;
 }
 export declare class ResponseUserDto {
-    id?: number;
+    id: number;
     email?: string;
     firstName?: string;
     lastName?: string;
