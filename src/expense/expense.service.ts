@@ -12,13 +12,14 @@ export class ExpenseService {
   ) {}
 
   // create expense
-  async createExpense(createExpenseDto: CreateExpenseDto) {
-    const expense = this.expenseRepo.create(createExpenseDto);
+  async createExpense(createExpenseDto: CreateExpenseDto, userId: number) {
+    const expenseData = { ...createExpenseDto, userId };
+    const expense = this.expenseRepo.create(expenseData);
     return this.expenseRepo.save(expense);
   }
   // delete expense
-  async deleteExpense(id: number) {
-    const expense = await this.expenseRepo.findOne({ where: { id } });
+  async deleteExpense(id: number, userId: number) {
+    const expense = await this.expenseRepo.findOne({ where: { id, userId } });
     if (!expense) {
       throw new NotFoundException(`Expense with ID ${id} not found`);
     }
@@ -26,21 +27,25 @@ export class ExpenseService {
     return { message: `Expense with ID ${id} deleted successfully` };
   }
   // update expense
-  async updateExpense(id: number, updateExpenseDto: UpdateExpenseDto) {
-    const expense = await this.expenseRepo.findOne({ where: { id } });
+  async updateExpense(
+    userId: number,
+    id: number,
+    updateExpenseDto: UpdateExpenseDto
+  ) {
+    const expense = await this.expenseRepo.findOne({ where: { id, userId } });
     if (!expense) {
       throw new NotFoundException(`Expense with ID ${id} not found`);
     }
     await this.expenseRepo.update(id, updateExpenseDto);
-    return this.expenseRepo.findOne({ where: { id } });
+    return this.expenseRepo.findOne({ where: { id, userId } });
   }
   // get all expenses
-  async findAllExpenses() {
-    return this.expenseRepo.find();
+  async findAllExpenses(userId: number) {
+    return this.expenseRepo.find({ where: { userId } });
   }
   // get by id
-  async findExpenseById(id: number) {
-    const expense = await this.expenseRepo.findOne({ where: { id } });
+  async findExpenseById(id: number, userId: number) {
+    const expense = await this.expenseRepo.findOne({ where: { id, userId } });
     if (!expense) {
       throw new NotFoundException(`Expense with ID ${id} not found`);
     }

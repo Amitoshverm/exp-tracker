@@ -32,8 +32,8 @@ export class User {
   @UpdateDateColumn()
   updatedAt: Date;
 
-  //   @OneToMany(() => Expense, (expense) => expense.user)
-  //   expenses: Expense[];
+  @OneToMany(() => Expense, (expense) => expense.user)
+  expenses: Expense[];
 }
 
 export class CreateUserDto {

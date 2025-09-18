@@ -8,44 +8,57 @@ import {
   Param,
   Patch,
   Post,
+  Request,
+  UseGuards,
 } from "@nestjs/common";
 import { ExpenseService } from "./expense.service";
 import { CreateExpenseDto, UpdateExpenseDto } from "./expense.entity";
+import { JwtAuthGuard } from "src/auth/jwt-guard.gurad";
 
 @Controller("expense")
+@UseGuards(JwtAuthGuard)
 export class ExpenseController {
   constructor(private expenseService: ExpenseService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  async createExpense(@Body() createExpenseDto: CreateExpenseDto) {
-    return this.expenseService.createExpense(createExpenseDto);
+  async createExpense(
+    @Body() createExpenseDto: CreateExpenseDto,
+    @Request() req: any
+  ) {
+    const userId = req.user.userId;
+    return this.expenseService.createExpense(createExpenseDto, userId);
   }
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  async getAllExpenses() {
-    return this.expenseService.findAllExpenses();
+  async getAllExpenses(@Request() req: any) {
+    const userId = req.user.userId;
+    return this.expenseService.findAllExpenses(userId);
   }
 
   @Get(":id")
   @HttpCode(HttpStatus.OK)
-  async getExpenseById(@Param("id") id: number) {
-    return this.expenseService.findExpenseById(id);
+  async getExpenseById(@Param("id") id: number, @Request() req: any) {
+    const userId = req.user.userId;
+    return this.expenseService.findExpenseById(id, userId);
   }
 
   @Patch(":id")
   @HttpCode(HttpStatus.OK)
   async updateExpense(
     @Param("id") id: number,
-    @Body() updateExpenseDto: UpdateExpenseDto
+    @Body() updateExpenseDto: UpdateExpenseDto,
+    @Request() req: any
   ) {
-    return this.expenseService.updateExpense(id, updateExpenseDto);
+    const userId = req.user.userId;
+    return this.expenseService.updateExpense(userId, id, updateExpenseDto);
   }
 
   @Delete(":id")
   @HttpCode(HttpStatus.OK)
-  async deleteExpense(@Param("id") id: number) {
-    return this.expenseService.deleteExpense(id);
+  async deleteExpense(@Param("id") id: number, @Request() req: any) {
+    const userId = req.user.userId;
+    return this.expenseService.deleteExpense(id, userId);
   }
 }
